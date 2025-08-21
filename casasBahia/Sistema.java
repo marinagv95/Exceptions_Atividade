@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import excecoes.PrecoInvalidoException;
 import excecoes.ProdutoInvalidoException;
+import excecoes.VoltagemInvalidaException;
 
 public class Sistema {
 
@@ -40,7 +41,11 @@ public class Sistema {
 		if (opcao == 1) {
 			adicionarMovel(scanner, nome, codigo, preco);
 		} else if (opcao == 2) {
+			try{
 			adicionarEletro(scanner, nome, codigo, preco);
+			} catch (VoltagemInvalidaException e){
+				System.out.println(e.getMessage());
+			}
 		} else {
 			throw new ProdutoInvalidoException("Escolha um produto válido!");
 		}
@@ -60,7 +65,7 @@ public class Sistema {
 		
 	}
 	
-	private void adicionarEletro(Scanner scanner, String nome, String codigo, double preco) {
+	private void adicionarEletro(Scanner scanner, String nome, String codigo, double preco) throws VoltagemInvalidaException {
 		CategoriaEletro categoriaEletro = null;
 		System.out.println("Qual a categoria do eletrodomestico cadastrado?");
 		System.out.println("1 - Cozinha");
@@ -78,10 +83,16 @@ public class Sistema {
 		}
 		System.out.println("Digite a voltagem");
 		int voltagem = scanner.nextInt();
-		scanner.nextLine();
-		Eletrodomestico eletro = new Eletrodomestico(codigo, nome, preco, categoriaEletro, voltagem);
-		produtos.add(eletro);
-		System.out.println("Produto adicionado");
+
+		if(voltagem == 0){
+			throw new VoltagemInvalidaException("Voltagem precisa ser maior que zero");
+		} else{
+			scanner.nextLine();
+			Eletrodomestico eletro = new Eletrodomestico(codigo, nome, preco, categoriaEletro, voltagem);
+			produtos.add(eletro);
+			System.out.println("Produto adicionado");
+
+		}
 
 	}
 
