@@ -2,6 +2,7 @@ package casasBahia;
 
 import java.util.Scanner;
 
+import excecoes.CodigoInvalidoException;
 import excecoes.PrecoInvalidoException;
 import excecoes.ProdutoInvalidoException;
 
@@ -36,7 +37,12 @@ public class Main {
                     sistema.listarProdutos();
                     break;
                 case 3:
+                    try{
                     sistema.buscarProduto(scan);
+
+                    }catch (CodigoInvalidoException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 4:
                     sistema.removerProduto(scan);
